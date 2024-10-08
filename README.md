@@ -1,3 +1,12 @@
+# steps to be followed
+
+create app using (npx create-react-app expense-management-app )
+install tailwin css to it (https://tailwindcss.com/docs/guides/create-react-app)
+make basic components
+add routing in it()
+install firebase
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
