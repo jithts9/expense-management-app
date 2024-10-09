@@ -8,13 +8,13 @@ import {
 import { auth } from "../util/firebase";
 
 const Login = () => {
-  const [isSinginForm, setIsSigninForm] = useState(false);
+  const [isSigninForm, setIsSigninForm] = useState(true);
   const [showValidationError, setShowValidationError] = useState(null);
-  console.log('isSinginForm',isSinginForm)
 
   const emailRef = useRef();
   const passwordRef = useRef();
   const userNameRef = useRef();
+
   const signUpClick = () => {
     setIsSigninForm((prevState) => !prevState);
   };
@@ -22,25 +22,22 @@ const Login = () => {
   const handleClick = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const fullName = !isSinginForm && userNameRef.current.value;
-    const isValid = checkValidation(isSinginForm, email, password, fullName);
+    const fullName = !isSigninForm && userNameRef.current.value;
+    const isValid = checkValidation(isSigninForm, email, password, fullName);
 
-    if (isValid) {
-      console.log("isValid", isValid);
+    if (isValid !== null) {
       setShowValidationError(isValid.message);
+      return
     } else {
       setShowValidationError(null);
     }
 
-    console.log("checked api call111", isSinginForm);
-    if (!isSinginForm) {
-      console.log("checked api call", isSinginForm);
+    if (!isSigninForm) {
       //-- create an account in firebase
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          console.log("user", user);
           // ...
         })
         .catch((error) => {
@@ -55,7 +52,6 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log("userSignin", user);
           // ...
         })
         .catch((error) => {
@@ -70,13 +66,13 @@ const Login = () => {
     <div>
       <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
         <form
-          //   onSubmit={(e) => e.preventDefault()}
+            onSubmit={(e) => e.preventDefault()}
           className="bg-black p-8 text-white flex flex-col space-y-4 w-full max-w-md opacity-80"
         >
           <h1 className="text-3xl font-bold">
-            {isSinginForm ? "Log In" : "Register User"}
+            {isSigninForm ? "Sign In" : "Register User"}
           </h1>
-          {!isSinginForm && (
+          {!isSigninForm && (
             <input
               ref={userNameRef}
               type="text"
@@ -100,7 +96,7 @@ const Login = () => {
             onClick={handleClick}
             className="bg-red-600 p-3 rounded text-white font-bold hover:bg-red-700"
           >
-            {isSinginForm ? "Sign In" : "Sign Up"}
+            {isSigninForm ? "Sign In" : "Sign Up"}
           </button>
           <p className="p-1 m-1 text-red-500">{showValidationError}</p>
           <div className="flex justify-between items-center">
@@ -110,7 +106,7 @@ const Login = () => {
             onClick={signUpClick}
             className="bg-gray-600 p-3 rounded text-white font-bold hover:bg-gray-700"
           >
-            {isSinginForm ? "Use a sign-in code" : "already signed in"}
+            {isSigninForm ? "sign-up" : "already signed in"}
           </button>
         </form>
       </div>
