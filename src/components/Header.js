@@ -1,7 +1,17 @@
 import React from "react";
 import appIcon from '../icons/appIcon.png'
+import { useNavigate } from "react-router-dom";
+import { useDispatch, UseDispatch } from "react-redux";
+import { removerUser } from "../util/userSlice";
 
 const Header = () => {
+
+const dispatch= useDispatch()
+const navigate = useNavigate()
+ const onClickLogoutButton  = () => {
+    dispatch(removerUser());
+    navigate('/')
+ }
   return (
     <div className="border-2 flex justify-between bg-lime-50">
       <div className="w-28 p-1">
@@ -20,7 +30,12 @@ const Header = () => {
           </li>
           <li className="p-3"> create 
             {/* <Link to="/groceory">gorceory </Link> */}
-          </li>   
+          </li> 
+          <li className="p-3">
+            <button onClick={onClickLogoutButton}>
+                log out
+            </button>
+            </li>  
         </ul>
       </div>
     </div>
