@@ -6,6 +6,9 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../util/firebase";
+import { useNavigate } from "react-router-dom";
+import { addUser } from "../util/userSlice";
+import { useDispatch, UseDispatch } from "react-redux";
 
 const Login = () => {
   const [isSigninForm, setIsSigninForm] = useState(true);
@@ -14,6 +17,9 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const userNameRef = useRef();
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const signUpClick = () => {
     setIsSigninForm((prevState) => !prevState);
@@ -38,6 +44,11 @@ const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
+          if (user) {
+            const {uid, displayName, email } = user
+            dispatch(addUser({uid: uid, name: displayName, email: email}))
+          }
+
           // ...
         })
         .catch((error) => {
@@ -52,6 +63,11 @@ const Login = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          if (user) {
+            const {uid, displayName, email } = user
+            dispatch(addUser({uid: uid, name: displayName, email: email}))
+            navigate('/list')
+          }
           // ...
         })
         .catch((error) => {
